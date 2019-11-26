@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Form, Upload, Icon, Message, Input, Button, Card } from "antd";
+import { Form, Upload, Icon, Message, Input, Button } from "antd";
 import "./ct.less";
+import axios from 'axios'
 class CT extends Component {
   constructor(props) {
     super(props);
@@ -77,13 +78,11 @@ class CT extends Component {
           Message.success("模型运行成功！");
           // 获取处理后的链接
           let urlAfter = `http://10.16.98.192:3306/api/run/image/${id}/url`;
-          fetch(urlAfter, { method: "GET" })
-            .then(res => res.json())
-            .then(res => {
-              this.setState({
-                imgAfterUrl: res
-              });
-            });
+          axios.get(urlAfter).then(res=>{
+            this.setState({
+              imgAfterUrl: res.data
+            })
+          })
         });
     } else {
       Message.error("没有id, 模型运行失败！");
